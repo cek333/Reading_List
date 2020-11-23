@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Search from './pages/Search';
 import Saved from './pages/Saved';
 import NoMatch from './pages/NoMatch';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
         <Switch>
           <Route path="/search"><Search /></Route>
           <Route path="/saved"><Saved /></Route>
+          <Route exact path="/"><Redirect to="/search" /></Route>
           <Route><NoMatch /></Route>
         </Switch>
       </div>
