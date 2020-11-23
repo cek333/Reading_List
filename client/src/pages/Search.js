@@ -19,8 +19,9 @@ function Search() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    setSearchList([]); // clear old results
     setShowList(true);
-    setSearchList(searchBooks(searchQuery));
+    searchBooks(searchQuery, setSearchList);
     setSearchQuery('');
   }
 

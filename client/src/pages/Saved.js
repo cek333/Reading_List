@@ -7,12 +7,12 @@ function Saved() {
   const [savedList, setSavedList] = useState([]);
 
   useEffect(function() {
-    setSavedList(getBooks());
+    getBooks(setSavedList);
   }, []);
 
   function handleClick(id) {
     deleteBook(id);
-    setSavedList(getBooks());
+    getBooks(setSavedList);
   }
 
   return (

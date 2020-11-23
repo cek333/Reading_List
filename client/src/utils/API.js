@@ -1,53 +1,52 @@
-import results from './data'; // sample api search results for local testing
-
-function searchBooks(searchQuery) {
-  console.log(`[searchBooks] searchQuery=${searchQuery}`);
-  let id, title, authors, description, smallThumbnail, previewLink;
-  // construct own book item object
-  const bookList = results.items.map(function(book) {
-    // destructure api data; assign default value for imageLinks if field missing
-    ({id, 
-      volumeInfo: {
-        title, 
-        authors, 
-        description, 
-        imageLinks: {smallThumbnail} = {smallThumbnail: 'https://via.placeholder.com/125'}, 
-        previewLink
-      }} = book);
-      return ({
-        _id: id, title, authors, description, image: smallThumbnail, link: previewLink
-      });
-  })
-  return bookList;
+function searchBooks(query, cb) {
+  fetch(`/api/googlebooks?q=${query}`)
+  .then(res => res.json())
+  .then(res => cb(res))
+  .catch(err => {
+    console.log('[searchBooks] err=', err);
+    cb([]);
+  });
 }
 
-function getBooks() {
-  // retrieve saved books from database
-  let id, title, authors, description, smallThumbnail, previewLink;
-  // construct own book item object
-  const bookList = results.items.map(function(book) {
-    // destructure api data; assign default value for imageLinks if field missing
-    ({id, 
-      volumeInfo: {
-        title, 
-        authors, 
-        description, 
-        imageLinks: {smallThumbnail} = {smallThumbnail: 'https://via.placeholder.com/125'}, 
-        previewLink
-      }} = book);
-      return ({
-        _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
-      });
-  })
-  return bookList;
+function getBooks(cb) {
+  fetch('/api/books')
+  .then(res => res.json())
+  .then(res => cb(res))
+  .catch(err => {
+    console.log('[getBooks] err=', err);
+    cb([]);
+  });
 }
 
-function deleteBook(id) {
-  console.log(`[deleteBook] id=${id}`);
+const noop = function(val){}; // do nothing.
+
+function deleteBook(id, cb = noop) {
+  let settings = {
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' }
+  }
+  fetch(`/api/books/${id}`, settings)
+  .then(res => res.json())
+  .then(res => cb(res))
+  .catch(err => {
+    console.log('[deleteBook] err=', err);
+    cb([]);
+  });
 }
 
-function saveBook(bookInfo) {
-  console.log(`[saveBook] id=${bookInfo._id} title=${bookInfo.title}`);
+function saveBook(bookInfo, cb = noop) {
+  let settings = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bookInfo)
+  }
+  fetch('/api/books', settings)
+  .then(res => res.json())
+  .then(res => cb(res))
+  .catch(err => {
+    console.log('[saveBook] err=', err);
+    cb([]);
+  });
 }
 
 export { searchBooks, getBooks, deleteBook, saveBook };
