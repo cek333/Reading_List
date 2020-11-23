@@ -1,6 +1,7 @@
 const db = require('../models');
 const express = require('express');
 const router = express.Router();
+const axios = require('axios');
 
 router.get('/api/books', async function(req, res){
   let result = await db.Book.find({});
@@ -11,7 +12,7 @@ router.get('/api/books', async function(req, res){
 router.post('/api/books', async function(req, res) {
   console.log('[post /api/books]', req.body);
   let result = await db.Book.create(req.body);
-  console.log(`[post /api/books] insertId=${result.insertId}`, result);
+  console.log('[post /api/books]', result);
   res.json(result);
 });
 
@@ -23,14 +24,19 @@ router.delete('/api/books/:id', async function(req, res){
 
 // Relay google api queries through server
 router.get('/api/googlebooks', async function(req, res) {
-  console.log(`[put /api/googlebooks?q=q] query=${req.query.q}`);
-
   let url = `https://www.googleapis.com/books/v1/volumes?key=${process.env.API_KEY}&projection=lite&orderBy=newest&q=${req.query.q}`;
-  let result = await fetch(url).then(res => res.json());
+  console.log(`[get /api/googlebooks?q=q] url=${url}`);
+  let results;
+  try  {
+    results = await axios.get(url);
+  } catch(err) {
+    console.log('[get /api/googlebooks] Error=',err)
+    results = [];
+  }
 
   let id, title, authors, description, smallThumbnail, previewLink;
   // construct our own book item object
-  const formattedResult = results.items.map(function(book) {
+  const formattedResult = results.data.items.map(function(book) {
     // Destructure api data; assign default value for imageLinks if field missing
     // Add saved field for ui
     ({id, 
