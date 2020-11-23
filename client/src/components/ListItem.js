@@ -11,7 +11,8 @@ function ListItem(props) {
                       ? props.item.authors[0]
                       : props.item.authors.join(' & ')}</p>
       <div className="d-flex">
-        <img src={props.item.image} alt='book cover' className="img-fluid mr-2" />
+        <img src={props.item.image} alt='book cover'
+            style={{objectFit: 'contain'}} className="img-fluid mr-2" />
         <p>{props.item.description}</p>
       </div>
     </div>
