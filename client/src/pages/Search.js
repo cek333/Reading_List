@@ -6,24 +6,39 @@ import { searchBooks } from '../utils/API';
 
 function Search() {
   const [searchList, setSearchList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showList, setShowList] = useState(false);
 
-  useEffect(function() {
-    setSearchList(searchBooks());
-  }, []);
+  // useEffect(function() {
+  //   setSearchList(searchBooks());
+  // }, []);
+
+  function handleChange(evt) {
+    setSearchQuery(evt.target.value);
+  }
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    setShowList(true);
+    setSearchList(searchBooks(searchQuery));
+    setSearchQuery('');
+  }
 
   function handleClick(evt) {
   }
 
   return (
     <>
-      <SearchForm />
-      <ListContainer>
-        {searchList.length===0
-          ? <p>No results found.</p>
-          : searchList.map(book => <ListItem onClick={handleClick} btnAction="Save"
-                                             key={book.id} item={book} />)
-        }
-      </ListContainer>
+      <SearchForm handleSubmit={handleSubmit} handleChange={handleChange} value={searchQuery} />
+      {showList &&
+        <ListContainer>
+          {searchList.length===0
+            ? <p>No results found.</p>
+            : searchList.map(book => <ListItem onClick={handleClick} btnAction="Save"
+                                              key={book.id} item={book} />)
+          }
+        </ListContainer>
+      }
     </>
   );
 }

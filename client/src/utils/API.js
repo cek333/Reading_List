@@ -1,6 +1,7 @@
 import results from './data'; // sample api search results for local testing
 
-function searchBooks() {
+function searchBooks(searchQuery) {
+  console.log(`[searchBooks] searchQuery=${searchQuery}`);
   let id, title, authors, description, smallThumbnail, previewLink;
   // construct own book item object
   const bookList = results.items.map(function(book) {
