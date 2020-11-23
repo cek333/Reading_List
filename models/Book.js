@@ -11,10 +11,22 @@ const BookSchema = new Schema({
     trim: true,
     required: true
   },
-  authors: [String],
-  description: String,
-  image: String,
-  link: String
+  authors: {
+    type: [String],
+    default: ['']
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  image: {
+    type: String,
+    default: 'https://via.placeholder.com/125'
+  },
+  link: {
+    type: String,
+    default: 'https://books.google.com/'
+  }
 });
 
 //BookSchema.set('toJSON', { getters: true, virtuals: true });
