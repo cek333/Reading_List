@@ -4,7 +4,7 @@ import ActionButton from './ActionButton';
 function ListItem(props) {
   return (
     <div className="book-item border border-primary mb-1 p-1">
-      <ActionButton onClick={props.onClick} action={props.btnAction} />
+      <ActionButton onClick={props.onClick} action={props.btnAction} disabled={props.disabled} />
       <ViewLink href={props.item.link} />
       <h6>{props.item.title}</h6>
       <p>Written by {props.item.authors.length===1

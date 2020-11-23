@@ -36,7 +36,7 @@ function getBooks() {
         previewLink
       }} = book);
       return ({
-        id, title, authors, description, image: smallThumbnail, link: previewLink
+        id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
       });
   })
   return bookList;

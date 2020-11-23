@@ -1,7 +1,7 @@
 import ListContainer from '../components/ListContainer';
 import ListItem from '../components/ListItem';
 import React, {useEffect, useState} from 'react';
-import { getBooks } from '../utils/API';
+import { getBooks, deleteBook } from '../utils/API';
 
 function Saved() {
   const [savedList, setSavedList] = useState([]);
@@ -10,15 +10,17 @@ function Saved() {
     setSavedList(getBooks());
   }, []);
 
-  function handleClick(evt) {
+  function handleClick(id) {
+    deleteBook(id);
+    setSavedList(getBooks());
   }
 
   return (
     <ListContainer>
       {savedList.length===0
         ? <p>No results found.</p>
-        : savedList.map(book => <ListItem onClick={handleClick} btnAction="Delete"
-                                          key={book.id} item={book} />)
+        : savedList.map(book => <ListItem onClick={() => handleClick(book.id)} btnAction="Delete"
+                                          disabled={false} key={book.id} item={book} />)
       }
     </ListContainer>
   );
