@@ -19,8 +19,8 @@ function Saved() {
     <ListContainer>
       {savedList.length===0
         ? <p>No results found.</p>
-        : savedList.map(book => <ListItem onClick={() => handleClick(book.id)} btnAction="Delete"
-                                          disabled={false} key={book.id} item={book} />)
+        : savedList.map(book => <ListItem onClick={() => handleClick(book._id)} btnAction="Delete"
+                                          disabled={false} key={book._id} item={book} />)
       }
     </ListContainer>
   );

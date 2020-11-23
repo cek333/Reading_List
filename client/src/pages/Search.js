@@ -29,7 +29,7 @@ function Search() {
     // Toggle saved property for book
     // Also save reference to book in 'bookToSave'
     let updatedList = searchList.map(book => {
-      if (book.id===id) {
+      if (book._id===id) {
         bookToSave = {...book};
         bookToSave.saved = true;
         return bookToSave;
@@ -48,8 +48,8 @@ function Search() {
         <ListContainer>
           {searchList.length===0
             ? <p>No results found.</p>
-            : searchList.map(book => <ListItem onClick={() => handleClick(book.id)} btnAction="Save"
-                                               disabled={book.saved} key={book.id} item={book} />)
+            : searchList.map(book => <ListItem onClick={() => handleClick(book._id)} btnAction="Save"
+                                               disabled={book.saved} key={book._id} item={book} />)
           }
         </ListContainer>
       }

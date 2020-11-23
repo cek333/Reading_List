@@ -15,7 +15,7 @@ function searchBooks(searchQuery) {
         previewLink
       }} = book);
       return ({
-        id, title, authors, description, image: smallThumbnail, link: previewLink
+        _id: id, title, authors, description, image: smallThumbnail, link: previewLink
       });
   })
   return bookList;
@@ -36,7 +36,7 @@ function getBooks() {
         previewLink
       }} = book);
       return ({
-        id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
+        _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
       });
   })
   return bookList;
@@ -47,7 +47,7 @@ function deleteBook(id) {
 }
 
 function saveBook(bookInfo) {
-  console.log(`[saveBook] id=${bookInfo.id} title=${bookInfo.title}`);
+  console.log(`[saveBook] id=${bookInfo._id} title=${bookInfo.title}`);
 }
 
 export { searchBooks, getBooks, deleteBook, saveBook };
