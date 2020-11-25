@@ -11,7 +11,13 @@ router.get('/api/books', async function(req, res){
 
 router.post('/api/books', async function(req, res) {
   console.log('[post /api/books]', req.body);
-  let result = await db.Book.create(req.body);
+  let result;
+  try {
+    result = await db.Book.create(req.body);
+  } catch(err) {
+    result = {};
+    console.log('[post /api/books] error=', err)
+  }
   console.log('[post /api/books]', result);
   res.json(result);
 });
@@ -37,13 +43,13 @@ router.get('/api/googlebooks', async function(req, res) {
   let id, title, authors, description, smallThumbnail, previewLink;
   // construct our own book item object
   const formattedResult = results.data.items.map(function(book) {
-    // Destructure api data; assign default value for imageLinks if field missing
+    // Destructure api data + assign default values for missing fields
     // Add saved field for ui
     ({id, 
       volumeInfo: {
         title, 
-        authors, 
-        description, 
+        authors = [],
+        description = '',
         imageLinks: {smallThumbnail} = {smallThumbnail: 'https://via.placeholder.com/125'}, 
         previewLink
       }} = book);
