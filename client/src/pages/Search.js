@@ -19,7 +19,6 @@ function Search() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    setSearchList([]); // clear old results
     setShowList(true);
     searchBooks(searchQuery, setSearchList);
     setSearchQuery('');
