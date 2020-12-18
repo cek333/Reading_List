@@ -5,7 +5,8 @@ const axios = require('axios');
 
 router.get('/api/books', async function(req, res){
   let result = await db.Book.find({});
-  console.log('[get /api/books]', result);
+  // (debug) Check return data. Omit description field for more compact output
+  console.log('[get /api/books]', result.map(book => ({...book.toJSON(), description:''})) );
   res.json(result);
 });
 
@@ -57,7 +58,8 @@ router.get('/api/googlebooks', async function(req, res) {
         _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
       });
   })
-  console.log('[get /api/googlebooks]', formattedResult);
+  // (debug) Check return data. Omit description field for more compact output
+  console.log('[get /api/googlebooks]', formattedResult.map(book=> ({...book, description:''})) );
   res.json(formattedResult);
 });
 
