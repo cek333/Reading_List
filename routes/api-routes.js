@@ -38,7 +38,7 @@ router.get('/api/googlebooks', async function(req, res) {
     results = await axios.get(url);
   } catch(err) {
     console.log('[get /api/googlebooks] Error=',err)
-    results = [];
+    results.data = [];
   }
 
   let id, title, authors, description, smallThumbnail, previewLink;
