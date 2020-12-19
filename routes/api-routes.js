@@ -36,31 +36,36 @@ router.get('/api/googlebooks', async function(req, res) {
   let results;
   try  {
     results = await axios.get(url);
+    // console.log('[get /api/googlebooks] num_of_books=',results.data.totalItems);
   } catch(err) {
-    console.log('[get /api/googlebooks] Error=',err)
+    console.log('[get /api/googlebooks] Error=',err);
     results.data = [];
   }
 
-  let id, title, authors, description, smallThumbnail, previewLink;
-  // construct our own book item object
-  const formattedResult = results.data.items.map(function(book) {
-    // Destructure api data + assign default values for missing fields
-    // Add saved field for ui
-    ({id, 
-      volumeInfo: {
-        title, 
-        authors = [],
-        description = '',
-        imageLinks: {smallThumbnail} = {smallThumbnail: 'https://via.placeholder.com/125'}, 
-        previewLink
-      }} = book);
-      return ({
-        _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
-      });
-  })
-  // (debug) Check return data. Omit description field for more compact output
-  console.log('[get /api/googlebooks]', formattedResult.map(book=> ({...book, description:''})) );
-  res.json(formattedResult);
+  if (results.data.totalItems == 0) {
+    res.json([]);
+  } else {
+    let id, title, authors, description, smallThumbnail, previewLink;
+    // construct our own book item object
+    const formattedResult = results.data.items.map(function(book) {
+      // Destructure api data + assign default values for missing fields
+      // Add saved field for ui
+      ({id,
+        volumeInfo: {
+          title,
+          authors = [],
+          description = '',
+          imageLinks: {smallThumbnail} = {smallThumbnail: 'https://via.placeholder.com/125'},
+          previewLink
+        }} = book);
+        return ({
+          _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
+        });
+    })
+    // (debug) Check return data. Omit description field for more compact output
+    console.log('[get /api/googlebooks]', formattedResult.map(book=> ({...book, description:''})) );
+    res.json(formattedResult);
+  }
 });
 
 module.exports = router;
