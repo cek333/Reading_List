@@ -19,9 +19,11 @@ function Search() {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    setShowList(true);
-    searchBooks(searchQuery, setSearchList);
-    setSearchQuery('');
+    searchBooks(searchQuery, (res) => {
+      setSearchList(res);
+      setShowList(true);
+      setSearchQuery('');
+    });
   }
 
   function handleClick(id) {
