@@ -22,6 +22,18 @@ function Saved() {
     deleteBook(id, (res)=> {
       // When delete operation complete, get updated list of books
       getBooks(setSavedList);
+      // Is deleted book in sessionStorage? Do a check and clear 'saved' flag.
+      if (sessionStorage.getItem('rl-gbs')) {
+        let storedSearch = JSON.parse(sessionStorage.getItem('rl-gbs'));
+        let updatedSearch = storedSearch.map(book => {
+          if (book._id===id) {
+            book.saved = false;
+          }
+          return book;
+        });
+        // Save updated list
+        sessionStorage.setItem('rl-gbs', JSON.stringify(updatedSearch));
+      }
     });
   }
 
