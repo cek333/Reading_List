@@ -6,6 +6,8 @@ Use the links in the navigation bar to switch between the Search and Saved pages
 
 On the Search page, type your query into the search box. 10 books related to your query (as determined by the Google Books API) will be displayed. Click the Save button to save a book to your 'Saved' reading list.
 
+The search results are saved in sessionStorage. This means your search results will persist even if you toggle between the Search and Saved pages. A new search will replace the old search results. Closing your browser tab will flush the sessionStorage.
+
 ![Screenshot of Search Page](readme/search_page.png)
 
 Click on the Saved link in the navigation bar to see a list of all books you've saved. You can press the Delete button to remove books from this list.
