@@ -9,9 +9,14 @@ function Search() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showList, setShowList] = useState(false);
 
-  // useEffect(function() {
-  //   setSearchList(searchBooks());
-  // }, []);
+  useEffect(function() {
+    let storedSearch;
+    if (sessionStorage.getItem('rl-gbs')) {
+      storedSearch = JSON.parse(sessionStorage.getItem('rl-gbs'));
+      setSearchList(storedSearch);
+      setShowList(true);
+    }
+  }, []);
 
   function handleChange(evt) {
     setSearchQuery(evt.target.value);
@@ -21,6 +26,7 @@ function Search() {
     evt.preventDefault();
     searchBooks(searchQuery, (res) => {
       setSearchList(res);
+      sessionStorage.setItem('rl-gbs', JSON.stringify(res));
       setShowList(true);
       setSearchQuery('');
     });
@@ -41,6 +47,7 @@ function Search() {
     });
     saveBook(bookToSave);
     setSearchList(updatedList);
+    sessionStorage.setItem('rl-gbs', JSON.stringify(updatedList));
   }
 
   return (
