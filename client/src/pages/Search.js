@@ -48,8 +48,8 @@ function Search() {
         <ListContainer>
           {searchList.length===0
             ? <p>No results found.</p>
-            : searchList.map(book => <ListItem onClick={() => handleClick(book._id)} btnAction="Save"
-                                               disabled={book.saved} key={book._id} item={book} />)
+            : searchList.map((book,idx) => <ListItem onClick={() => handleClick(book._id)} btnAction="Save"
+                                               disabled={book.saved} key={`${idx}-${book._id}`} item={book} />)
           }
         </ListContainer>
       }
