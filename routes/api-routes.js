@@ -45,6 +45,8 @@ router.get('/api/googlebooks', async function(req, res) {
   if (results.data.totalItems == 0) {
     res.json([]);
   } else {
+    let savedBooks = await db.Book.find({});
+    let savedIds = savedBooks.map(book => book._id);
     let id, title, authors, description, smallThumbnail, previewLink;
     // construct our own book item object
     const formattedResult = results.data.items.map(function(book) {
@@ -59,7 +61,8 @@ router.get('/api/googlebooks', async function(req, res) {
           previewLink
         }} = book);
         return ({
-          _id: id, title, authors, description, image: smallThumbnail, link: previewLink, saved: false
+          _id: id, title, authors, description, image: smallThumbnail, link: previewLink, 
+          saved: savedIds.includes(id)
         });
     })
     // (debug) Check return data. Omit description field for more compact output
