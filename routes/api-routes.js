@@ -31,7 +31,7 @@ router.delete('/api/books/:id', async function(req, res){
 
 // Relay google api queries through server
 router.get('/api/googlebooks', async function(req, res) {
-  let url = `https://www.googleapis.com/books/v1/volumes?key=${process.env.API_KEY}&projection=lite&orderBy=newest&q=${req.query.q}`;
+  let url = `https://www.googleapis.com/books/v1/volumes?key=${process.env.API_KEY}&projection=lite&q=${req.query.q}`;
   console.log(`[get /api/googlebooks?q=q] url=${url}`);
   let results;
   try  {
