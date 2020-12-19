@@ -6,12 +6,12 @@ const axios = require('axios');
 router.get('/api/books', async function(req, res){
   let result = await db.Book.find({});
   // (debug) Check return data. Omit description field for more compact output
-  console.log('[get /api/books]', result.map(book => ({...book.toJSON(), description:''})) );
+  // console.log('[get /api/books]', result.map(book => ({...book.toJSON(), description:''})) );
   res.json(result);
 });
 
 router.post('/api/books', async function(req, res) {
-  console.log('[post /api/books]', req.body);
+  // console.log('[post /api/books]', req.body);
   let result;
   try {
     result = await db.Book.create(req.body);
@@ -19,20 +19,20 @@ router.post('/api/books', async function(req, res) {
     result = {};
     console.log('[post /api/books] error=', err)
   }
-  console.log('[post /api/books]', result);
+  // console.log('[post /api/books]', result);
   res.json(result);
 });
 
 router.delete('/api/books/:id', async function(req, res){
   let result = await db.Book.findByIdAndDelete(req.params.id);
-  console.log('[delete /api/books/:id]', result);
+  // console.log('[delete /api/books/:id]', result);
   res.json(result);
 });
 
 // Relay google api queries through server
 router.get('/api/googlebooks', async function(req, res) {
   let url = `https://www.googleapis.com/books/v1/volumes?key=${process.env.API_KEY}&projection=lite&q=${req.query.q}`;
-  console.log(`[get /api/googlebooks?q=q] url=${url}`);
+  // console.log(`[get /api/googlebooks?q=q] url=${url}`);
   let results;
   try  {
     results = await axios.get(url);
@@ -66,7 +66,7 @@ router.get('/api/googlebooks', async function(req, res) {
         });
     })
     // (debug) Check return data. Omit description field for more compact output
-    console.log('[get /api/googlebooks]', formattedResult.map(book=> ({...book, description:''})) );
+    // console.log('[get /api/googlebooks]', formattedResult.map(book=> ({...book, description:''})) );
     res.json(formattedResult);
   }
 });
