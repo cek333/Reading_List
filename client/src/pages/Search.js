@@ -1,65 +1,33 @@
+import { useSelector } from 'react-redux';
 import SearchForm from '../components/SearchForm';
 import ListContainer from '../components/ListContainer';
 import ListItem from '../components/ListItem';
-import React, {useState, useEffect} from 'react';
-import { saveBook, searchBooks } from '../utils/API';
+import { selectSearchResultIds, selectSearchTerm, selectError, selectStatus } from './SearchSlice';
 
 function Search() {
-  const [searchList, setSearchList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showList, setShowList] = useState(false);
+  const searchListIds = useSelector(selectSearchResultIds);
+  const error = useSelector(selectError);
+  const status = useSelector(selectStatus);
+  const query = useSelector(selectSearchTerm);
+  const showList = (status !== 'loading') && (query.length > 0);
 
-  useEffect(function() {
-    let storedSearch;
-    if (sessionStorage.getItem('rl-gbs')) {
-      storedSearch = JSON.parse(sessionStorage.getItem('rl-gbs'));
-      setSearchList(storedSearch);
-      setShowList(true);
+  let content;
+  if (status === 'failed') {
+    content = <p>{error}</p>;
+  } else {
+    if (searchListIds.length === 0) {
+      content = <p>No results found</p>
+    } else {
+      content = searchListIds.map(id => <ListItem key={id} bookId={id} btnAction="Save" />);
     }
-  }, []);
-
-  function handleChange(evt) {
-    setSearchQuery(evt.target.value);
-  }
-
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    searchBooks(searchQuery, (res) => {
-      setSearchList(res);
-      sessionStorage.setItem('rl-gbs', JSON.stringify(res));
-      setShowList(true);
-      setSearchQuery('');
-    });
-  }
-
-  function handleClick(id) {
-    let bookToSave;
-    // Toggle saved property for book
-    // Also save reference to book in 'bookToSave'
-    let updatedList = searchList.map(book => {
-      if (book._id===id) {
-        bookToSave = {...book};
-        bookToSave.saved = true;
-        return bookToSave;
-      } else {
-        return book;
-      }
-    });
-    saveBook(bookToSave);
-    setSearchList(updatedList);
-    sessionStorage.setItem('rl-gbs', JSON.stringify(updatedList));
   }
 
   return (
     <>
-      <SearchForm handleSubmit={handleSubmit} handleChange={handleChange} value={searchQuery} />
+      <SearchForm />
       {showList &&
         <ListContainer>
-          {searchList.length===0
-            ? <p>No results found.</p>
-            : searchList.map((book,idx) => <ListItem onClick={() => handleClick(book._id)} btnAction="Save"
-                                               disabled={book.saved} key={`${idx}-${book._id}`} item={book} />)
-          }
+          {content}
         </ListContainer>
       }
     </>
