@@ -1,53 +1,30 @@
-function searchBooks(query, cb) {
-  fetch(`/api/googlebooks?q=${query}`)
-  .then(res => res.json())
-  .then(res => cb(res))
-  .catch(err => {
-    console.log('[searchBooks] err=', err);
-    cb([]);
-  });
-}
-
-function getBooks(cb) {
-  fetch('/api/books')
-  .then(res => res.json())
-  .then(res => cb(res))
-  .catch(err => {
-    console.log('[getBooks] err=', err);
-    cb([]);
-  });
-}
-
-const noop = function(val){}; // do nothing.
-
-function deleteBook(id, cb = noop) {
+function fetchJSON(url, method='get', data={}) {
   let settings = {
-    method: 'delete',
+    method,
     headers: { 'Content-Type': 'application/json' }
+  };
+  if (method === 'post' || method === 'put') {
+    settings.body = JSON.stringify(data);
   }
-  fetch(`/api/books/${id}`, settings)
-  .then(res => res.json())
-  .then(res => cb(res))
-  .catch(err => {
-    console.log('[deleteBook] err=', err);
-    cb([]);
-  });
+  return fetch(url, settings).then(res => res.json());
 }
 
-function saveBook(bookInfo, cb = noop) {
-  let settings = {
-    method: 'post',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(bookInfo)
-  }
-  fetch('/api/books', settings)
-  .then(res => res.json())
-  .then(res => cb(res))
-  .catch(err => {
-    console.log('[saveBook] err=', err);
-    cb([]);
-  });
+function searchBooks(query) {
+  return fetchJSON(`/api/googlebooks?q=${query}`);
 }
 
-export { searchBooks, getBooks, deleteBook, saveBook };
+function getBooks() {
+  return fetchJSON('/api/books');
+}
+
+function deleteBook(id) {
+  return fetchJSON(`/api/books/${id}`, 'delete');
+}
+
+function saveBook(bookInfo) {
+  return fetchJSON('/api/books', 'post', bookInfo);
+}
+
+const API = { searchBooks, getBooks, deleteBook, saveBook }
+export default API;
 
