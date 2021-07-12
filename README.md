@@ -1,5 +1,5 @@
 # Reading_List
-This application allows users to search for and save books of interest. The Google Books API is used to get books matching the user's query. This is a full-stack MERN application i.e. it has been built using MongoDB/Mongoose, Express, React and Node. The application is deployed to Heroku. The MongoDB Database is hosted on MongoDB Atlas.
+This application allows users to search for and save books of interest. The Google Books API is used to get books matching the user's query. This is a full-stack MERN application i.e. it has been built using MongoDB/Mongoose, Express, React, Redux and Node. The application is deployed to Heroku. The MongoDB Database is hosted on MongoDB Atlas.
 
 # Usage
 Use the links in the navigation bar to switch between the Search and Saved pages.
@@ -17,7 +17,7 @@ Click on the Saved link in the navigation bar to see a list of all books you've 
 # Releases
 * v1.0: [Initial Version](https://github.com/cek333/Reading_List/releases/tag/v1.0) (Dec 18, 2020)
   > **Brief data flow overview**: On the Search Page, when the user does a search, the data fetched from the API is stored in session storage. So, when the user navigates to the Saved page and then back to the Search Page, any previous search results are retrived from session storage. On the Saved Page, each time the page is loaded, an API call is made to the server to fetch the list of saved books. 
-* v2.0: Redux Version (Jul 11, 2021)
+* Current version: Redux Version (Jul 11, 2021)
   > **Brief data flow overview**: On the Search Page, when the user does a search, the data fetched from the API is stored in the Redux store. When the app is first loaded, an API call is made to the server, and the list of saved books is stored in the Redux store.
 
 # Try It
